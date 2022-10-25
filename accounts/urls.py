@@ -4,7 +4,7 @@ from .views import Home, gameView, finalResults
 from accounts import views
 
 urlpatterns = [
-    path("", Home.as_view(), name="home"),
-    url("gameView", views.gameView, name = "gameView"),
+    # path("", Home.as_view(), name="home"),
+    url("", views.gameView, name = "gameView"),
     url("final", views.finalResults, name = "result")
 ]

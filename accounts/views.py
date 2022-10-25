@@ -2,7 +2,7 @@ from django.views.generic import TemplateView
 from django.views.generic.edit import CreateView
 from django.urls import reverse_lazy
 from .forms import RegistrationForm
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 
 # from django.shortcuts import render
@@ -18,10 +18,10 @@ import json
 from .models import event, transaction, finalResult
 from datetime import datetime
 
-class Home(TemplateView):
-    template_name = "home.html"
+# class Home(TemplateView):
+#     template_name = "home.html"
     
-    extra_context={'events': finalResult.objects.all()}
+#     extra_context={'events': finalResult.objects.all()}
 
 
 class SignUpView(CreateView):
@@ -57,9 +57,8 @@ def gameView(request):
             print(request.body)
             
             amount = request.POST['amount']
-
             colour = request.POST['colour']
-            event_obj = postData.event_id
+            event_obj = request.POST['event_id']
             event_obj = event.object.get(id=event)
             transaction_obj = transaction(user=request.user, amount=amount, colour=colour, event=event_obj)
             transaction_obj.save()
@@ -81,14 +80,15 @@ def gameView(request):
             if(last_event.end_time>timenow):
                 #in case event is running
                 #open the current event
-                pass
+                newEvent= last_event
             else:
                 newEvent = event()
                 #set new event end time
                 pass
+            return render('home.html', {event:newEvent.id})
     else:
         #handle authentication
-        pass
+        return redirect('/account/login/')
             
 
 def finalResults(request):

@@ -82,11 +82,11 @@
             <span id ="colorHead"> </span>
           </div><br><br>
 
-          <form action="{%url 'gameView' %}" method="POST">
+          <form action="/" method="POST">
             {% csrf_token %}
 
            <input type="number" name="amount" placeholder="Amount"><br><br> 
-           <input type="number" name="event_id" placeholder="id"><br><br> 
+           <input type="hidden" name="event_id" placeholder="id" value="{{event}}"><br><br> 
            <input type="text" name="colour" placeholder="colour"><br><br> 
            <input type="submit" name="submit"> 
           </form>
