@@ -35,6 +35,8 @@ class UserAdmin(UserAdmin):
     filter_horizontal = ()
 
 
-# admin.site.register(models.Result)
+admin.site.register(models.event)
 
-# admin.site.register(models.UserWallet)
+admin.site.register(models.transaction)
+
+admin.site.register(models.finalResult)
