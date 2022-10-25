@@ -157,15 +157,6 @@ def create_or_update_profile(sender, instance, created, **kwargs):
     instance.profile.save()
 
 
-class Result(models.Model):
-    user = models.OneToOneField(
-        User, on_delete=models.CASCADE,  unique=True)
-    Result_id = models.AutoField(unique=True, primary_key=True)
-    Red = models.IntegerField( default = True, null= True)
-    Green= models.IntegerField( default = True, null= True)
-    Blue = models.IntegerField( default = True, null= True)
-    finalColor = models.CharField( max_length=255, blank=True, null=True)
-
 class event(models.Model):
     id = models.AutoField
     start_time = models.DateTimeField(auto_now_add=True, editable=False)
@@ -175,10 +166,15 @@ class event(models.Model):
     red_count = models.IntegerField(default=0)
 
 class transaction(models.Model):
-    choice = ('Red', 'Green', 'Blue')
+    # choice = ('Red', 'Green', 'Blue')
     id = models.AutoField
     user = models.ForeignKey('User', on_delete=models.CASCADE)
     amount = models.IntegerField()
-    colour = models.CharField(choices=choice)
+    colour = models.CharField(choices=[('Red', 'Red'), ('Green', 'Green'), ('Blue', 'Blue')], max_length=5)
     event = models.ForeignKey('event', on_delete=models.CASCADE)
-    time = start_time = models.DateTimeField(auto_now_add=True, editable=False)
+    start_time = models.DateTimeField(auto_now_add=True, editable=False)
+
+
+class finalResult(models.Model):
+    event = models.ForeignKey('event', on_delete=models.CASCADE)
+    colour = models.CharField(max_length = 5)
