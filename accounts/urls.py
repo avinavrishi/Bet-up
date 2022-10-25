@@ -1,6 +1,6 @@
 from django.urls import path
 from django.conf.urls import url 
-from .views import Home, gameView, finalResults
+from .views import gameView, finalResults
 from accounts import views
 
 urlpatterns = [
