@@ -81,11 +81,17 @@
           <div style="background-color: White; height:40px;" id="colorHeadBanner">
             <span id ="colorHead"> </span>
           </div><br><br>
-          <form method="POST">
+
+          <form action="{%url 'gameView' %}" method="POST">
             {% csrf_token %}
-           <input type="number" name="betAmout" placeholder="Amount"><br><br>
+
+           <input type="number" name="amount" placeholder="Amount"><br><br> 
+           <input type="number" name="event_id" placeholder="id"><br><br> 
+           <input type="text" name="colour" placeholder="colour"><br><br> 
            <input type="submit" name="submit"> 
           </form>
+
+
           <button type="button" class="btn btn-light" onclick="closeBetForm();">Close</button>
         </div>
       </div>
@@ -160,10 +166,10 @@
     </div>
 
   </div>
-
+ {% for event in events %}
   <div class="row">
     <div class="col-3 text-center">
-      <span>Period</span>
+      <span>Period : {{event.event.id}} </span>
     </div>
 
     <div class="col-3 text-center">
@@ -173,10 +179,11 @@
       <span>Number</span>
     </div>
     <div class="col-3 text-center">
-      <span>Result</span>
+      <span>{{event.colour}}</span>
     </div>
 
   </div>
+  {% endfor %}
 </div>
 
 
