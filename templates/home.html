@@ -1,0 +1,269 @@
+{% extends 'registration/base.html' %}
+{% block title %}Home{% endblock %}
+
+{% block content %}
+  <!-- Navbar -->
+
+
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <!-- Container wrapper -->
+    <div class="container-fluid">
+      <!-- Toggle button -->
+      <button class="navbar-toggler" type="button" data-mdb-toggle="collapse" data-mdb-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="fas fa-bars"></i>
+      </button>
+
+      <!-- Collapsible wrapper -->
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <!-- Navbar brand -->
+        <a class="navbar-brand mt-2 mt-lg-0" href="">
+          LOGO
+        </a>
+        <!-- Left links -->
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link" href="#">Dashboard</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Team</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Projects</a>
+          </li>
+        </ul>
+        <!-- Left links -->
+      </div>
+      <!-- Collapsible wrapper -->
+
+      <!-- Right elements -->
+      <div class="d-flex align-items-center">
+        {% if user.is_authenticated %}
+        <button type="button" class="btn btn-link px-3 me-2 text-theme">
+            <a href="{% url 'logout' %}">Log Out</a>
+        </button>
+       
+        {% else %}
+        <button type="button" class="btn btn-link px-3 me-2 text-theme">
+            <a href="{% url 'login' %}">Log In</a>
+        </button>
+        <button type="button" class="btn btn-link px-3 me-2 text-theme">
+          <a href="{% url 'signup' %}">Sign up for free</a>
+        </button>
+        {% endif %}
+
+
+      </div>
+      <!-- Right elements -->
+    </div>
+    <!-- Container wrapper -->
+  </nav>
+  <!-- Navbar -->
+ <br>
+{% if user.is_authenticated %}
+<div class="card text-center">
+ 
+  <div class="card-body">
+    <blockquote class="blockquote mb-0">
+      <p>Welcome on board {{ user }}! </p>
+      <footer class="blockquote-footer">You are successfully logged in</footer>
+    </blockquote>
+  </div>
+</div>
+
+  {% if user.admin %}
+      <span>i am the admin</span> 
+  {% endif %}
+
+
+
+<div class="container-fluid headerBal">
+
+<div class ="row">
+  <div class="col-12">
+
+  <div class = "betForm" id = "betForm" style="display: none; position: absolute; height: 700px; width: 100%; background-color: black; z-index:10">
+
+    <div class="container-fluid">
+      <div class="row justify-content-center mt-2">
+        <div class="col-4 text-center bg-light">
+          <div style="background-color: White; height:40px;" id="colorHeadBanner">
+            <span id ="colorHead"> </span>
+          </div><br><br>
+
+          <form>
+            {% csrf_token %}
+
+           <input type="number" name="amount" id ="amount" placeholder="Amount"><br><br> 
+           
+           <button type="button" class="btn btn-light">Submit</button>
+          </form>
+
+
+          <button type="button" class="btn btn-light">Close</button>
+        </div>
+      </div>
+    </div> 
+  </div>
+
+
+
+  </div>
+</div>
+
+  
+  <div class="row">
+    <div class="col-12">
+      
+      <span id ="bal">Available balance  {{ user.profile.available_Balance }}</span>
+      <br>
+      <button type="button" class="btn btn-success">Recharge</button>
+      <button type="button" class="btn btn-light" id ="read">Read Rule</button>
+      <br>
+      <span>Refresh</span>
+    </div>
+
+  </div>
+</div>
+
+
+<div class="container-fluid headerGameSec">
+  
+  <div class="row">
+    <div class="col-12">
+      <span>My Game</span>   
+    </div>
+  </div>
+</div>
+
+<div class="container-fluid headerGameArea">
+  
+  <div class="row">
+    <div class="col-6">
+      <span>Period</span>
+      <span id = "period"> </span>   
+    </div>
+    <div class="col-6">
+      <span>Count Down</span> 
+      <p id="timer"></p>  
+    </div>
+  </div>
+
+
+<div class="row">
+    <div class="col-4 text-center p-1">
+        <button type="button" class="btn btn-danger" id="red">Join Red</button>
+    </div>
+    <div class="col-4 text-center p-1">
+      <button type="button" class="btn btn-success" id="green">Join Green</button> 
+    </div>
+     <div class="col-4 text-center p-1">
+      <button type="button" class="btn btn-primary" id="blue">Join Blue</button> 
+    </div>
+  </div>
+
+  
+
+
+
+</div>
+
+
+<div class="container-fluid ParityRecord">
+  
+  <div class="row justify-content-center">
+    <div class="col-6 text-center">
+      <span>Parity Record</span>
+    </div>
+
+  </div>
+  
+ {% for event in events %}
+  <div class="row">
+    <div class="col-3 text-center">
+      <span>Period : {{event.event}} </span>
+    </div>
+
+    <div class="col-3 text-center">
+      <span>Price</span>
+    </div>
+    <div class="col-3 text-center">
+      <span>Number</span>
+    </div>
+    <div class="col-3 text-center">
+      <span>{{event.colour}}</span>
+    </div>
+
+  </div>
+  {% endfor %}
+</div>
+
+
+{% for transaction in transactions%}
+<div class="container">
+  <div class="row">
+    <div class="col-6">
+      <span> Lottery number</span>
+    </div>
+
+    <div class="col-6">
+      {{ transaction.event.lotteryNumber }}
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-6">
+      <span>Selected Colour</span>
+    </div>
+
+    <div class="col-6">
+      {{transaction.colour}}
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-6">
+      <span>Amount</span>
+    </div>
+
+    <div class="col-6">
+      {{ transaction.amount }}
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-6">
+      <span>Status</span>
+    </div>
+
+    <div class="col-6">
+      {{ transaction.status }}
+    </div>
+  </div>
+
+</div>
+
+{% endfor %}
+
+
+
+
+
+
+{% else %}
+<div class="card text-center">
+  
+  <div class="card-body">
+    <blockquote class="blockquote mb-0">
+      <p>You are not logged in</p>
+
+    </blockquote>
+  </div>
+</div>
+{% endif %}
+
+
+
+
+
+{% endblock %}

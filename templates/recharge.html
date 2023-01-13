@@ -1,0 +1,41 @@
+{% extends 'registration/base.html' %}
+{% block title %} Recharge Page {% endblock %}
+
+{% block rechargePage %}
+	{% if user.is_authenticated %}
+
+
+
+	<div class="container">
+		<div class="row">
+			<div class="col-12 p-4">
+				<span>Recharge Now</span>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-12 text-center">
+				<span>Balance: {{user.profile.available_Balance}}</span>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-12 text-center">
+				<input type="number" name="rechargeAmount" id ="rechargeAmount" placeholder="Amount"><br><br> 
+			</div>
+		</div>
+		{% for partner in paymentPartners %}
+		<div class="row">
+			<div class="col-12 text-center">
+				<input type="checkbox" name="upiId" id ="upiId">
+				<label for ="upiId">{{ partner.upiId }}</label>
+			</div>
+		</div>
+		{% endfor %}
+
+	</div>
+
+
+
+
+
+	{% endif %}
+{% endblock %}
