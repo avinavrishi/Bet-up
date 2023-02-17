@@ -28,7 +28,7 @@ SECRET_KEY = 'django-insecure-5k9dq(rp-_!mdamajk)9e$qqp(ze+$kpp1dsop-ptxqkj-_7j^
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['192.168.29.179']
 
 
 # Application definition
@@ -166,5 +166,5 @@ ACCOUNT_USERNAME_REQUIRED = False
 
 
 LOGIN_REDIRECT_URL = "home"
-LOGOUT_REDIRECT_URL = "home"
+LOGOUT_REDIRECT_URL = "login"
 django_heroku.settings(locals())

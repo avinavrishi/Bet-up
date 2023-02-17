@@ -1,0 +1,41 @@
+{% extends 'registration/base.html' %}
+{% block title %}Withdrawal Page {% endblock %}
+
+
+{% block withdrawalPage %}
+<div class="container">
+    <h1 class="text-center my-5">Withdrawal</h1>
+    <form method="post" action="{% url 'save_withdrawal_request' %}">
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="user_id">User ID</label>
+        <input type="text" class="form-control" id="user_id" name="user_id" required>
+      </div>
+      <div class="form-group">
+        <label for="amount">Amount</label>
+        <input type="text" class="form-control" id="amount" name="amount" required>
+      </div>
+      <div class="form-group">
+        <label for="payment_method">Payment Method</label>
+        <select class="form-control" id="payment_method" name="payment_method" required>
+          <option value="UPI">UPI</option>
+          <option value="Bank">Bank</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="account_number">Account Number</label>
+        <input type="text" class="form-control" id="account_number" name="account_number" required>
+      </div>
+      <div class="form-group">
+        <label for="bank_name">Account Holder Name</label>
+        <input type="text" class="form-control" id="account_holder_name" name="account_holder_name" required>
+      </div>
+      <div class="form-group">
+        <label for="UPI_id">UPI ID</label>
+        <input type="text" class="form-control" id="UPI_id" name="UPI_id">
+      </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+  </div>
+{% endblock %}
+

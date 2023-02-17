@@ -6,33 +6,186 @@
 
 
 
-	<div class="container">
-		<div class="row">
-			<div class="col-12 p-4">
-				<span>Recharge Now</span>
+	<div class="container-fluid">
+		<div class="row bg-primary">
+			<div class="col-12 mt-3 mb-3">
+				<span style="font-size: 20px; font-weight: 400; color: white;">Recharge</span>
 			</div>
 		</div>
-		<div class="row">
+		<div class="row mt-3">
 			<div class="col-12 text-center">
-				<span>Balance: {{user.profile.available_Balance}}</span>
+				<span style="font-size: 20px; font-weight: 600;">Balance: {{user.profile.available_Balance}}</span>
 			</div>
 		</div>
-		<div class="row">
-			<div class="col-12 text-center">
-				<input type="number" name="rechargeAmount" id ="rechargeAmount" placeholder="Amount"><br><br> 
+		<div class="row mt-3">
+			<div class="col-12">
+				
+				<input class="form-control form-control-lg" name="rechargeAmount" id ="rechargeAmount" type="number" placeholder="Recharge Amount" aria-label=".form-control-lg example">
+				<span id="emptyMsg" style="color:red; font-size: 15px;"></span>
 			</div>
 		</div>
+
+		<div class="row mt-3 p-3">
+			 <div class="col-2 p-2  recAmtBut border border-primary text-center">100</div>
+
+    	<div class="col-2 p-2 recAmtBut border border-primary text-center">200</div>
+
+    <div class="col-2 p-2  recAmtBut border border-primary text-center">500</div>
+
+    <div class="col-2 p-2 recAmtBut border border-primary text-center">1000</div>
+
+      <div class="col-2 p-2 recAmtBut border border-primary text-center">3000</div>
+
+      <div class="col-2 p-2 recAmtBut border border-primary text-center">10000</div>
+
+		</div>
+
+
+		<div class="row mt-3">
+			<div class="col-12">
+				<span>Tips: Please contact acethyking@gmail.com if you have any questions 
+				about the order or payment failure</span>
+			</div>
+		</div>
+
+
 		{% for partner in paymentPartners %}
-		<div class="row">
-			<div class="col-12 text-center">
-				<input type="checkbox" name="upiId" id ="upiId">
+		<div class="row mt-3 border border-3 border-light" id ="partnerId">
+			<div class="col-3 text-center pb-2 pt-2">
+				<input type="radio" name="upiId" value ="{{ partner.upiId }}" >
+				
+			</div>
+			<div class="col-9 text-end pb-2 pt-2">
+				
 				<label for ="upiId">{{ partner.upiId }}</label>
 			</div>
 		</div>
 		{% endfor %}
 
+
+		<div class="row mt-3">
+			<div class="col-12 text-center">
+			
+				<button type="button" class="btn btn-primary btn-lg text-white" data-target="#myModal">Recharge Now</button>
+				
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-12">
+				
+
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog" >
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        
+        <h4 class="modal-title" style="font-size: 20px; font-weight: 600;">Sender's Details</h4>
+      </div>
+      <div class="modal-body">
+        <input class="form-control form-control-lg" type="text" name="actualName" id ="actualName" placeholder="Actual Name"><br><br> 
+        <input class="form-control form-control-lg" type="text" name="email" id ="email" placeholder="Email"><br><br> 
+        <input class="form-control form-control-lg" type="number" name="phoneNumber" id ="phoneNumber" placeholder="Mobile Number"><br><br> 
+      </div>
+      <div class="modal-footer">
+      	<button type="button" class="btn btn-primary text-white">Submit</button>
+				
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+			</div>
+		</div>
 	</div>
 
+<script>
+    
+    $(document).ready(function(){
+     
+     	let upiID = "";
+     	let rAmount = 0;
+    	$("#partnerId").find(":radio").first().prop("checked", true);
+
+
+    	$(".recAmtBut").click(function(){
+    		rech = $(this).text();
+    		$("#rechargeAmount").val(rech);
+    	});
+
+
+
+
+      $(".btn").click(function(){
+        val = $(this).text();
+        
+        if(val == "Recharge Now"){
+
+        	upiID = $("input[name='upiId']:checked").val();
+        	rAmount = $("#rechargeAmount").val();
+        	
+
+        	if(rAmount === ""){
+        		$("#rechargeAmount").css("border-color", "red");
+
+        		$('#emptyMsg').html("Please enter some amount")
+        	}
+        	else{
+        	$('#myModal').modal('show');
+        	sessionStorage.setItem("upiId", upiID);
+        	sessionStorage.setItem("rAmount", rAmount);
+        	}
+        }
+
+        
+        if(val === "Submit"){
+        	let actName = $("#actualName").val();
+        	let Email = $("#email").val();
+        	let PhoneNumber = $("#phoneNumber").val();
+
+        	if(actName === ""){
+        		$("#actualName").css("border-color", "red");
+        	}
+        	else if(Email === ""){
+        		$("#email").css("border-color", "red");
+        	}
+        	else if(PhoneNumber === ""){
+        		$("#phoneNumber").css("border-color", "red");
+        	}else{
+        	sessionStorage.setItem("actName", actName);
+        	sessionStorage.setItem("Email", Email);
+        	sessionStorage.setItem("PhoneNumber", PhoneNumber);
+
+        	window.location.href = '{% url 'SubmitUtrPage' %}';
+        	}
+
+        	
+        }
+        else if(val === "Close"){
+        	$('#myModal').modal('hide');
+
+        }
+        
+      
+
+      });  
+    });
+
+
+
+ $(document).ready(function(){
+  $('.recAmtBut').click(function(){
+    $('.recAmtBut').removeClass('bg-primary text-white'); // remove class from all columns
+    $(this).addClass('bg-primary text-white'); // add class to clicked column
+  });
+});
+
+ 
+</script>
 
 
 
