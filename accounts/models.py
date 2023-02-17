@@ -166,6 +166,18 @@ class event(models.Model):
     green_count = models.IntegerField(default=0)
     red_count = models.IntegerField(default=0)
 
+    zero_count = models.IntegerField(default=0)
+    one_count = models.IntegerField(default=0)
+    two_count = models.IntegerField(default=0)
+    three_count = models.IntegerField(default=0)
+    four_count = models.IntegerField(default=0)
+    five_count = models.IntegerField(default=0)
+    six_count = models.IntegerField(default=0)
+    seven_count = models.IntegerField(default=0)
+    eight_count = models.IntegerField(default=0)
+    nine_count = models.IntegerField(default=0)
+
+
     def __str__(self):
         return str(self.lotteryNumber)
 
@@ -174,7 +186,8 @@ class transaction(models.Model):
     id = models.AutoField
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     amount = models.IntegerField()
-    colour = models.CharField(choices=[('Red', 'Red'), ('Green', 'Green'), ('Blue', 'Blue')], max_length=5)
+    colour = models.CharField(choices=[('Red', 'Red'), ('Green', 'Green'), ('Blue', 'Blue')], max_length=5, blank=True)
+    luckyNumber = models.IntegerField(default=0)
     event = models.ForeignKey(event, on_delete=models.CASCADE)
     start_time = models.DateTimeField(auto_now_add=True, editable=False)
     status = models.CharField(null= True, max_length=8)
@@ -184,6 +197,8 @@ class transaction(models.Model):
 class finalResult(models.Model):
     event = models.OneToOneField(event, on_delete=models.CASCADE, unique=True, primary_key= True)
     colour = models.CharField(max_length = 5)
+    luckyNumber = models.IntegerField(default=0)
+
     def __str__(self):
         return str(self.event)
 
@@ -211,6 +226,7 @@ class PaymentPartner(models.Model):
     def __str__(self):
         return self.name
 
+
 class PaymentRecord(models.Model):
     id = models.AutoField(primary_key = True)
     user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
@@ -226,15 +242,20 @@ class PaymentRecord(models.Model):
                                    )])
     rechargeAmount = models.IntegerField()
 
-    paymentSentTo = models.ForeignKey(PaymentPartner, unique=False, on_delete=models.DO_NOTHING)
+    paymentSentTo = models.ForeignKey(PaymentPartner, on_delete=models.SET_DEFAULT, default=None, null=True)
 
     UTR_num = models.CharField(max_length= 30, unique=True)
 
     status = models.CharField(max_length=20, null= True)
 
 
-class WithdrawalRecord(models.Model):
-    id = models.AutoField(primary_key= True)
-    user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
-    withdrwaAmount = models.IntegerField()
-    status = models.CharField(max_length=10, null=True)
+class Withdrawal(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    payment_method = models.CharField(max_length=20, choices=(('UPI', 'UPI'), ('Bank', 'Bank')))
+    account_number = models.CharField(max_length=20)
+    account_holder_name = models.CharField(max_length=50)
+    UPI_id = models.CharField(max_length=50, blank=True, null=True)
+    status = models.CharField(max_length=10, default='pending')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)

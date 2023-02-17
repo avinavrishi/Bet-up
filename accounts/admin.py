@@ -44,4 +44,4 @@ admin.site.register(models.PaymentPartner)
 
 admin.site.register(models.PaymentRecord)
 
-admin.site.register(models.WithdrawalRecord)
+admin.site.register(models.Withdrawal)
