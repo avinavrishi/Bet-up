@@ -1,0 +1,119 @@
+{% extends 'registration/base.html' %}
+{% block title %}Withdrawal Page {% endblock %}
+
+
+{% block withdrawalPage %}
+<div class="container">
+  <div class="row bg-primary">
+      <div class="col-12 mt-3 mb-3 text-center">
+        <span style="font-size: 20px; font-weight: 400; color: white;">Withdrawal</span>
+      </div>
+    </div>
+    <div class="row mt-3">
+      <div class="col-12 text-center">
+        <span style="font-size: 20px; font-weight: 600;">Balance: {{user.profile.available_Balance}}</span>
+      </div>
+    </div>
+</div>
+
+<div class="container mt-2">
+    <form method="post" action="{% url 'save_withdrawal_request' %}">
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="amount">Amount</label>
+        <input type="number" class="form-control" id="amount" name="amount" required>
+      </div>
+     <div class="form-group">
+  <label>Payment Method</label>
+  <div class="form-check">
+    <input class="form-check-input" type="radio" id="payment_method_upi" name="payment_method" value="UPI" required>
+    <label class="form-check-label" for="payment_method_upi">
+      UPI
+    </label>
+  </div>
+  <div class="form-check">
+    <input class="form-check-input" type="radio" id="payment_method_bank" name="payment_method" value="Bank" required>
+    <label class="form-check-label" for="payment_method_bank">
+      Bank
+    </label>
+  </div>
+</div>
+    <div class="form-group" id="account_number_group">
+  <label for="account_number">Account Number</label>
+  <input type="text" class="form-control" id="account_number" name="account_number">
+</div>
+
+<div class="form-group" id="account_holder_name_group">
+  <label for="bank_name">Account Holder Name</label>
+  <input type="text" class="form-control" id="account_holder_name" name="account_holder_name">
+</div>
+
+<div class="form-group" id="upi_id_group">
+  <label for="UPI_id">UPI ID</label>
+  <input type="text" class="form-control" id="UPI_id" name="UPI_id">
+</div>
+
+<div class="row text-center">
+  <div class="col-12">
+    <button type="submit" class="btn btn-primary w100 text-white" onclick="return validateWithdrawal()">Submit</button>
+  </div>
+</div>
+      
+    </form>
+</div>
+
+
+ <script>
+
+  // Hide the bank account fields by default
+  document.getElementById("account_number_group").style.display = "none";
+  document.getElementById("account_holder_name_group").style.display = "none";
+  
+  // Select UPI payment method by default
+  document.getElementById("payment_method_upi").checked = true;
+  document.getElementById("upi_id_group").style.display = "block";
+  
+  // Add event listener to the payment method radio buttons
+  document.querySelectorAll('input[name="payment_method"]').forEach((radio) => {
+    radio.addEventListener("change", function() {
+      if (this.value === "UPI") {
+        document.getElementById("upi_id_group").style.display = "block";
+        document.getElementById("account_number_group").style.display = "none";
+        document.getElementById("account_holder_name_group").style.display = "none";
+      } else {
+        document.getElementById("upi_id_group").style.display = "none";
+        document.getElementById("account_number_group").style.display = "block";
+        document.getElementById("account_holder_name_group").style.display = "block";
+      }
+    });
+  });
+
+  function validateWithdrawal() {
+  // Get the available balance and the withdrawal amount
+  var availableBalance = parseFloat('{{ user.profile.available_Balance }}');
+  var withdrawalAmount = parseFloat(document.getElementById('amount').value);
+  
+  // If the withdrawal amount is greater than the available balance, display an error message and prevent the form from submitting
+  if (withdrawalAmount > availableBalance) {
+    alert('Error: Insufficient funds');
+    return false;
+  }
+  
+  // If the withdrawal amount is valid, allow the form to submit
+  return true;
+}
+
+
+</script>
+
+
+
+
+
+
+
+
+
+
+{% endblock %}
+

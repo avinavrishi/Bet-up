@@ -1,0 +1,110 @@
+{% extends 'registration/base.html' %}
+{% block title %}Payment Page {% endblock %}
+{% load static %}
+{% block submitUTR %}
+
+<div class="container">
+
+  <div class ="row justify-content-center text-center mt-3 border-top-0 border-secondary">
+    <div class="col-6">
+      <img src="{% static '/images/upiImage.png' %}" height="50" width="150">
+    </div>
+  </div>
+
+
+  <div class="row mt-3 justify-content-center border-top-0 border-secondary">
+
+    <div class="col-12 border border-light">
+      <h4 class="bg-primary text-white p-2"> Step 1. Copy UPI Information </h4>
+      <span style="font-weight: bold;">Amount :</span>
+      <span id ="rechargeAmount"> </span><br>
+      <span style="font-weight: bold;">VPA/UPI :</span>
+      <span id= "UPIID"> </span>
+    </div>
+    
+  </div>
+
+
+  <div class="row mt-3 justify-content-center border-top-0 border-secondary">
+    <div class="col-12 border border-light">
+      <h4 class="bg-primary text-white p-2"> Step 2. Transfer and don't modify this amount to us by UPI transfer. </h4>
+      <span>Please record your reference No.{Ref No.} after payment</span>
+    </div>
+  </div>
+
+   <div class="row mt-3 justify-content-center ">
+    <div class="col-12 border border-light">
+      <h4 class="bg-primary text-white p-2"> Step 3. Please enter Ref No. to complete the recharge </h4>
+      <span>Be sure to return this page to fill in the UTR numbers after you have completed your payment</span><br>
+        <input class="form-control form-control-lg" type="text" name="UTRID" id ="UTRID" placeholder="UTR or Reference id"><br><br>
+    </div>
+  </div>
+   <div class="row justify-content-center">
+    <div class="col-12 text-center">
+       <button type="button" class="btn btn-primary text-white">Submit UTR</button> 
+    </div>
+  </div>
+
+</div>
+
+
+
+
+	
+	
+
+
+
+
+<script type="text/javascript">
+	$("#rechargeAmount").html(sessionStorage.getItem("rAmount"));
+	$("#UPIID").html(sessionStorage.getItem("upiId"));
+
+	$(document).ready(function(){
+    
+      $(".btn").click(function(){
+        val = $(this).text()
+        
+        if(val == "Submit UTR"){
+        	let utrID = $("#UTRID").val();
+        	
+
+        	let actName = sessionStorage.getItem("actName");
+        	let Email = sessionStorage.getItem("Email");
+        	let PhoneNumber = sessionStorage.getItem("PhoneNumber");
+        	let rAmount = sessionStorage.getItem("rAmount");
+        	let upiId = sessionStorage.getItem("upiId");
+
+    
+        	
+
+        	
+        	myRechargeData = {csrfmiddlewaretoken: '{{ csrf_token }}', rechargeAmount: rAmount, upiId: upiId, actualName: actName, email: Email, phoneNumber: PhoneNumber, UTRID: utrID}
+
+                  $.ajax({
+
+                      url:"{% url 'SubmitUtrPage' %}",
+                      method: "POST",
+                      data: myRechargeData,
+                      success: function(data){
+                        console.log(data);
+                        sessionStorage.clear();
+                        window.location.href = '{% url 'home' %}';
+                        
+                      },
+
+                    });
+
+
+                
+
+
+        }
+        
+      
+
+      });  
+    });
+
+</script>
+{% endblock %}

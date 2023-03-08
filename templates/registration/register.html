@@ -5,15 +5,11 @@
 
 {% block body %}
 
-<div class="main-wrap">
-    
-    <div class="row ">
-        <div class="col-xl-5 d-none d-xl-block p-0 vh-100 bg-image-cover bg-no-repeat"
-            style="background-image: url({% static 'images/login-bg-2.jpg' %});"></div>
-        <div class="col-xl-7 vh-100 align-items-center d-flex bg-white rounded-3 ">
-            <div class="card shadow-none border-0 ms-auto me-auto">
-                <div class="card-body rounded-0 ">
-                    <h2 class="fw-700 display1-size display2-md-size mb-4">Creat Your Account</h2>
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h2 class="fw-700 display1-size display2-md-size mb-4">Create Your Account</h2>
                     <form method="POST" accept-charset="UTF-8">
                         {% csrf_token %}
                         <div class="form-group icon-input mb-3">
@@ -58,17 +54,15 @@
                     </div>
                     </form>
 
-                    <div class="col-sm-12 p-0 text-left">
+        </div>
+        <div class="col-sm-12 p-0 text-left">
                        
                         <h6 class="text-grey-500 font-xsss fw-500 mt-0 mb-0 lh-32">Already have account <a
                                 href="{% url 'login' %}" class="fw-700 ms-1">Login</a></h6>
                     </div>
-                    
-
-                </div>
-            </div>
-        </div>
     </div>
 </div>
+
+
 
 {% endblock body %}

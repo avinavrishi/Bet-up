@@ -1,0 +1,17 @@
+{% extends 'registration/base.html' %}
+{% block title %}Withdrawal Success {% endblock %}
+
+
+{% block withdrawalSuccess %}
+<div class="d-flex align-items-center justify-content-center" style="height: 100vh;">
+  <div class="container border p-4 bg-light text-center">
+    <div class="alert alert-success p-4" role="alert">
+      Withdrawal request was sent successfully!
+    </div>
+    <button type="button" onclick= "window.location.href = '{% url 'home' %}';" class="btn btn-success">Okay</button>
+  </div>
+</div>
+
+
+{% endblock %}
+
