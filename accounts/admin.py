@@ -8,9 +8,6 @@ User = get_user_model()
 
 
 @admin.register(models.User)
-
-
-
 class UserAdmin(UserAdmin):
     list_display = ['email', 'first_name', 'last_name', 'phone', 'last_login',
                     'is_active', 'is_staff'
@@ -20,7 +17,7 @@ class UserAdmin(UserAdmin):
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
         ('Personal Info', {'fields': ('first_name', 'last_name', 'phone')}),
-        ('Dates', {'fields': ('last_login','available_Balance')})
+        ('Dates', {'fields': ('last_login',)})
     )
     add_fieldsets = (
         (None, {
@@ -40,3 +37,11 @@ admin.site.register(models.event)
 admin.site.register(models.transaction)
 
 admin.site.register(models.finalResult)
+
+admin.site.register(models.Profile)
+
+admin.site.register(models.PaymentPartner)
+
+admin.site.register(models.PaymentRecord)
+
+admin.site.register(models.Withdrawal)
