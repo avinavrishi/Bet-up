@@ -2,9 +2,7 @@
 
 ## How to run in linux:
 
-Download or clone the reposatory:
-```
-git clone https://github.com/Rakib01/django_login_system.git
+
 ```
 Go to project folder:
 ```
