@@ -6,7 +6,7 @@
 ```
 Go to project folder:
 ```
-cd django_login_system
+cd lootadda
 ```
 Create a Virtual Environment:
 ```
